@@ -19,36 +19,50 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <!-- Advanced Tables -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                             Data Customer
-                        </div>
-                        <div class="panel-body">
-                            <div class="card-body table-responsive p-0">
-                                <table class="table table-hover text-nowrap">
-                                  <thead>                  
-                                       <tr>
-                                        <th scope="row">ID</th>
-                                        <th>Nama</th>
-                                        <th>Alamat</th>  
-                                        <th>Provinsi</th>
-                                        <th>Kota</th>
-                                        <th>Kecamatan</th>
-                                        <th>Kode Pos - Kelurahan</th>
-                                        <th>Action</th>
-                                       </tr>
-                                    </thead>
-                                    <tbody>
+  
+ <!-- page content -->
+ <div class="right_col" role="main">
+    <div class="">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_content">
+              <table id="datatable-buttons" class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>ID Customer</th>
+                    <th>ID Kelurahan</th>
+                    <th>Nama</th>
+                    <th>Alamat</th>
+                    <th>Foto</th>
+                    <th>File Path</th>
+                  </tr>
+                </thead>
 
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <!--End Advanced Tables -->
-                </div>
+                <tbody>
+                  @foreach($customer as $c)
+                  <tr>
+                    <td>{{ $c->ID_CUSTOMER }}</td>
+                    <td>{{ $c->ID_KELURAHAN }}</td>
+                    <td>{{ $c->NAMA }}</td>
+                    <td>{{ $c->ALAMAT }}</td>
+                    <td>@if ( isset($c->FOTO) )
+                      <img src="{{(base64_decode($c->FOTO))}}">@endif</td>
+                    <td>@if ( isset($c->FILE_PATH) )
+                      <img src="{{ asset($c->FILE_PATH) }}"> @endif</td>
+                  </tr>
+                  @endforeach
+                </tbody>
+              </table>
             </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- /page content -->
+  </div>
+</div>
 
 @endsection

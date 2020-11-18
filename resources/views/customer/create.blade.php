@@ -5,8 +5,8 @@
 <div class="row">
                     <div class="col-md-12">
                         <h1 class="page-header">
-                            Form Customer <br>
-                            <small>Masukkan Data Dengan Benar</small>
+                            Form Customer Sebagai Blob<br>
+                            <small>Berikut merupakan tabel customer sebagai blob</small>
                         </h1>
             <ol class="breadcrumb">
   <li><a href="#">Home</a></li>
@@ -26,9 +26,9 @@
       <div id="content">
         
            <!-- form start -->
-                <form class="form-horizontal form-label-left" action="CategoriesStore" method="post">
-                  
-                   {{ @csrf_field() }}
+      <form class="form-horizontal form-label-left" action="customerstore" methode="POST"> 
+
+        {{ @csrf_field() }}
                    <div class="col-md-12">
                 <div class="card-body">
                   <div class="form-group">
@@ -84,8 +84,22 @@
               </div>
 
               </div>
-          </div>
+
+          <div class="form-group">
+                     <label for="examplefoto">Foto<span class="required"> * </span></label>
+                     <br>
+                <div id="wrap">
+                  <img src="" id="img" name="img" required="required">
+                  <input id="foto" name="foto" type="hidden" value="" required="required">
+                </div>
+                <button type="button" onclick="btn_ambilFoto()" style="margin-top:10px;" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Ambil Foto</button>
+            
+                  <button id="submit" value="SimpanData" style="margin-top:10px;"  type="submit" class="btn btn-success">Submit</button>
+              </div>
+
       </form>
+                  
+               
                     <!-- /.card-body -->
                 <!-- <center>
                 <div class="card-footer">
@@ -95,7 +109,54 @@
                 </div>
                 </center> -->
 
-                <script type="text/javascript">
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="width:800px; margin-left:50px;">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle" style="margin-top:5px; margin-left:10px;">Ambil Foto</h3>
+            <button type="button" class="close tutup-modal" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="kamera"></div>
+            <div id="results" style="float:right; margin-top:-240px; margin-right:50px;"></div>
+            <button id="btn_kamera" type="button" onclick="take_snapshot()" class="btn btn-primary"><i class="fa fa-camera fa-lg"></i></button>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" id="save" class="btn btn-primary simpan-foto" data-dismiss="modal">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+  #kamera{
+    width: 320px;
+    height: 240px;
+    border: 1px solid #ccc;
+    margin-left: 50px;
+  }
+
+  #wrap{
+    width: 320px;
+    height: 240px;
+    border: 1px solid #ccc;
+  }
+
+  #btn_kamera{
+    margin-top: 10px;
+    margin-left: 105px;
+  }
+</style>
+
+<!--<script src="{{ asset('template/gentela/src/js/webcam.js') }}"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js" integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw==" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>-->
+<script type="text/javascript">
                                 jQuery(document).ready(function ()
                                 {
                                         jQuery('select[name="provinsi"]').on('change',function(){
@@ -163,7 +224,8 @@
                                                     console.log(data);
                                                     jQuery('select[name="kelurahan"]').empty();
                                                     jQuery.each(data, function(key,value){
-                                                       $('select[name="kelurahan"]').append('<option value="'+ key +'">'+ value +' - ' + key +'</option>');
+                                                       $('select[name="kelurahan"]').append('<option value="'+ value.ID_KELURAHAN +'">'+ value.KODEPOS +' - ' + value.NAMA_KELURAHAN +'</option>');
+
                                                     });
                                                  }
                                               });
@@ -176,116 +238,34 @@
                                 });
 
                             </script>
-                            <center>
-                            <div class="form-actions form-group">
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <canvas id="myCanvas2" width="320" height="240" style="border:1px solid #000000;">
-                                            <input type="hidden" id="foto" name="foto">
-                                    </div>
-                                    <div class="col-sm-12" text-right>
-                                            <button type="button" class="btn btn-danger btn-primary" data-toggle="modal" data-target="#largeModal">Ambil Gambar</button>
-                                            <button type="submit" class="btn btn-default btn-primary">Submit</button>
-                                    </div>
-                            </center>
-                        </form>
-                    
 
-        <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="largeModalLabel">Ambil Foto</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <center>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <video autoplay="" id="video-webcam"  class="border w-100" width="320" height="240">
-                                    Browsermu tidak mendukung bro, upgrade donk!</video>
-                                </div>
-                                <center>
-                                <div class="col-sm-6" text-right>
-                                    <canvas id="myCanvas" width="320" height="240" style="border:1px solid #000000;"></canvas>
-                                    <button type="button" class="btn btn-primary" onclick="takeSnapshot()">Ambil Foto</button>
-                                </div>
-                              </center>
-                            </div>
-                                
-                        </div>
-                        </center>
+<script>
+  Webcam.set({
+    width: 320,
+    height: 240,
+    image_format: 'jpeg',
+    jpeg_quality: 90
+  })
+
+  function btn_ambilFoto(){
+    Webcam.attach("#kamera")
+  } 
+    
+  function take_snapshot(){
+    Webcam.snap(function (data_uri){
+      document.getElementById('results').innerHTML =
+      '<img id="hasil" src="'+data_uri+'"/>';
+    });
+
+    var hasil = $('#hasil').attr('src');
+    $('#save').click(function(){
+      $('#img').attr('src', hasil);
+      $('#foto').val(hasil);
+    });
+  }
+</script>
 
 
-                        <script type="text/javascript">
-                            // seleksi elemen video
-                            var video = document.querySelector("#video-webcam");
 
-                            // minta izin user
-                            navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
-
-                            // jika user memberikan izin
-                            if (navigator.getUserMedia) {
-                                // jalankan fungsi handleVideo, dan videoError jika izin ditolak
-                                navigator.getUserMedia({ video: true }, handleVideo, videoError);
-                            }
-
-                            // fungsi ini akan dieksekusi jika  izin telah diberikan
-                            function handleVideo(stream) {
-                                video.srcObject = stream;
-                            }
-
-                            // fungsi ini akan dieksekusi kalau user menolak izin
-                            function videoError(e) {
-                                // do something
-                                alert("Izinkan menggunakan webcam untuk demo!")
-                            }
-
-                            function takeSnapshot() {
-                                
-
-                                // ambil ukuran video
-                                var width = video.offsetWidth
-                                        , height = video.offsetHeight;
-
-                                // buat elemen canvas
-                                canvas = document.getElementById("myCanvas");
-                                canvas.width = width;
-                                canvas.height = height;
-
-                                // ambil gambar dari video dan masukan 
-                                // ke dalam canvas
-                                context = canvas.getContext('2d');
-                                context.drawImage(video, 0, 0, width, height);
-                            }
-
-                            function saveSnapshot() {
-                                var img = document.createElement('img');
-
-                                // ambil ukuran video
-                                var width = video.offsetWidth
-                                        , height = video.offsetHeight;
-
-                                // buat elemen canvas
-                                canvas1 = document.getElementById("myCanvas2");
-                                canvas1.width = width;
-                                canvas1.height = height;
-                                foto = document.getElementById("myCanvas");
-
-                                context = canvas1.getContext('2d');
-                                context.drawImage(foto, 0, 0, width, height);
-
-                                img.src = canvas1.toDataURL('image/png');
-                                document.getElementById("foto").value=img;
-                            }
-                        </script>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary"  data-dismiss="modal" onclick="saveSnapshot()">Simpan Foto</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        
 @endsection
